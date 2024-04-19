@@ -52,14 +52,14 @@ app.post("/register", async (req, res) => {
       profileImage,
     });
 
-    //generate the verification token
+    
     newUser.verificationToken = crypto.randomBytes(20).toString("hex");
 
     //save the user to the database
     await newUser.save();
 
-    //send the verification email to the registered user
-    sendVerificationEmail(newUser.email, newUser.verificationToken);
+    
+    // sendVerificationEmail(newUser.email, newUser.verificationToken);
 
     res.status(202).json({
       message:
@@ -71,30 +71,30 @@ app.post("/register", async (req, res) => {
   }
 });
 
-const sendVerificationEmail = async (email, verificationToken) => {
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "pmpumuropizzou@gmail.com",
-      pass: "rhakvnorsvapbams",
-    },
-  });
+// const sendVerificationEmail = async (email, verificationToken) => {
+//   const transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     auth: {
+//       user: "pmpumuropizzou@gmail.com",
+//       pass: "rhakvnorsvapbams",
+//     },
+//   });
 
-  const mailOptions = {
-    from: "pmpumuropizzou@gmail.com",
-    to: email,
-    subject: "Email Verification",
-    text: `please click the following link to verify your email : http://localhost:3000/verify/${verificationToken}`,
-  };
+//   const mailOptions = {
+//     from: "pmpumuropizzou@gmail.com",
+//     to: email,
+//     subject: "Email Verification",
+//     text: `please click the following link to verify your email : http://localhost:3000/verify/${verificationToken}`,
+//   };
 
-  //send the mail
-  try {
-    await transporter.sendMail(mailOptions);
-    console.log("Verification email sent successfully");
-  } catch (error) {
-    console.log("Error sending the verification email");
-  }
-};
+//   //send the mail
+//   try {
+//     await transporter.sendMail(mailOptions);
+//     console.log("Verification email sent successfully");
+//   } catch (error) {
+//     console.log("Error sending the verification email");
+//   }
+// };
 
 //endpoint to verify email
 app.get("/verify/:token", async (req, res) => {
